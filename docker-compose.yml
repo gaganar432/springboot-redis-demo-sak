@@ -18,13 +18,13 @@ services:
 
   app:
     build: .
-    image: sak_redis_app   # Your custom image name
+    image: sak_redis_app
     container_name: sak_app
     ports:
       - "8084:8084"
     environment:
-      - SPRING_REDIS_HOST=redis  # Connects to Redis container via network alias
-      - SPRING_REDIS_PORT=6379
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
     depends_on:
       - redis
     networks:
@@ -32,3 +32,4 @@ services:
 
 volumes:
   redis-data:
+
