@@ -2,61 +2,82 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Redis User Manager | @sak_shetty</title>
+    <title>Redis User Manager </title>
     <link rel="stylesheet" href="/css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body>
 
 <header class="header">
     <div class="header-content">
         <h1>Redis User Manager</h1>
-        <p>Developed by <span>@sak_shetty</span></p>
+        <p>Modern Dashboard UI</p>
     </div>
 </header>
 
 <main>
-    <div class="main-container">
+    <div class="container">
 
-        <!-- Add / Fetch Section -->
-        <section class="form-section">
-            <div class="card">
+        <section class="cards-section">
+
+            <!-- Add User -->
+            <div class="glass-card">
                 <h2>Add User</h2>
-                <form action="/save" method="post">
-                    <input type="text" name="id" placeholder="User ID" required>
-                    <input type="text" name="name" placeholder="User Name" required>
-                    <button type="submit" class="btn btn-primary">Add User</button>
+
+                <form action="/save" method="post" class="form-group">
+                    <div class="input-box">
+                        <input type="text" name="id" required autocomplete="off">
+                        <label>User ID</label>
+                    </div>
+
+                    <div class="input-box">
+                        <input type="text" name="name" required autocomplete="off">
+                        <label>User Name</label>
+                    </div>
+
+                    <button type="submit" class="btn primary">Add User</button>
                 </form>
             </div>
 
-            <div class="card">
-                <h2>Fetch User by ID</h2>
-                <form action="/fetch" method="post">
-                    <input type="text" name="id" placeholder="Enter User ID" required>
-                    <button type="submit" class="btn btn-secondary">Fetch User</button>
+            <!-- Fetch User -->
+            <div class="glass-card">
+                <h2>Fetch User</h2>
+
+                <form action="/fetch" method="post" class="form-group">
+                    <div class="input-box">
+                        <input type="text" name="id" required autocomplete="off">
+                        <label>Enter User ID</label>
+                    </div>
+
+                    <button type="submit" class="btn secondary">Fetch User</button>
                 </form>
 
-                <div class="user-info" th:if="${user}">
+                <div class="user-details" th:if="${user}">
+                    <h3>User Info</h3>
                     <p><b>ID:</b> <span th:text="${user.id}"></span></p>
                     <p><b>Name:</b> <span th:text="${user.name}"></span></p>
+
                     <form action="/delete" method="post">
                         <input type="hidden" name="id" th:value="${user.id}">
-                        <button type="submit" class="btn btn-danger">Delete User</button>
+                        <button type="submit" class="btn danger">Delete</button>
                     </form>
                 </div>
             </div>
+
         </section>
 
         <!-- Messages -->
         <section class="message-section">
-            <div class="message success" th:if="${successMessage}" th:text="${successMessage}"></div>
-            <div class="message error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+            <div class="msg success" th:if="${successMessage}" th:text="${successMessage}"></div>
+            <div class="msg error" th:if="${errorMessage}" th:text="${errorMessage}"></div>
         </section>
 
-        <!-- All Users Table -->
-        <section class="table-section" th:if="${allUsers}">
-            <h2>All Users (Insertion Order)</h2>
-            <div class="table-container">
+        <!-- All users table -->
+        <section class="table-wrapper" th:if="${allUsers}">
+            <h2>All Users</h2>
+
+            <div class="glass-table">
                 <table>
                     <thead>
                         <tr>
@@ -64,12 +85,14 @@
                             <th>Name</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <tr th:each="user : ${allUsers}">
                             <td th:text="${user.id}"></td>
                             <td th:text="${user.name}"></td>
                         </tr>
                     </tbody>
+
                 </table>
             </div>
         </section>
@@ -78,19 +101,8 @@
 </main>
 
 <footer class="footer">
-    <p>© 2025 @sak_shetty | Redis User Manager</p>
+    <p>  Redis Modern UI</p>
 </footer>
-
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const messages = document.querySelectorAll('.message');
-    messages.forEach(msg => {
-      setTimeout(() => {
-        msg.classList.add('fade-out');
-      }, 3000);
-    });
-  });
-</script>
 
 </body>
 </html>
