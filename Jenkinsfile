@@ -10,6 +10,7 @@ pipeline {
     }
 
     stages {
+
         stage('Checkout Code') {
             steps {
                 checkout scm
@@ -32,9 +33,19 @@ pipeline {
             steps {
                 sh '''
                     docker-compose down || true
+                    docker-compose build --no-cache
                     docker-compose up -d
                 '''
             }
+        }
+    }
+
+    post {
+        success {
+            echo "Deployment successful 🎉 Spring Boot + Redis app running!"
+        }
+        failure {
+            echo "❌ Deployment failed. Check logs."
         }
     }
 }
