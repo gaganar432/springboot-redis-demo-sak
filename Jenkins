@@ -1,0 +1,40 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven'
+    }
+
+    environment {
+        IMAGE_NAME = "sak_redis_app"
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build Jar') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh "docker build -t ${IMAGE_NAME} ."
+            }
+        }
+
+        stage('Deploy with Docker Compose') {
+            steps {
+                sh '''
+                    docker-compose down || true
+                    docker-compose up -d
+                '''
+            }
+        }
+    }
+}
